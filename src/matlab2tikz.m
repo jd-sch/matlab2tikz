@@ -2030,7 +2030,7 @@ function [m2t, lineOpts] = getLineOptions(m2t, h)
     % print no lines
     if isNone(lineStyle) || lineWidth==0
         lineOpts = opts_add(lineOpts, 'draw', 'none');
-        lineOpts = opts_add(lineOpts, 'only marks');
+        %lineOpts = opts_add(lineOpts, 'only marks');
     end
 end
 % ==============================================================================
