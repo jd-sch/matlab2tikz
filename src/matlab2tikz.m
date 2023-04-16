@@ -2116,6 +2116,13 @@ function [m2t, drawOptions] = getMarkerOptions(m2t, h)
             drawOptions = opts_addSubOpts(drawOptions, 'mark options', ...
                                        markerInfo.options);
         end
+        
+        % Add MarkerIndices option
+        markerIndices= get(h, 'MarkerIndices');
+        if (length(markerIndices) ~= length(get(h, 'YData')))
+            drawOptions = opts_add(drawOptions, 'mark indices',strcat('{',strjoin(arrayfun(@(x) num2str(x),markerIndices,'UniformOutput',false),','),'}'));
+        end
+
     end
 
     type = getOrDefault(h, 'Type', 'none');
