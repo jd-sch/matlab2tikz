@@ -767,7 +767,7 @@ function [m2t, label, labelRef] = addPlotyyReference(m2t, h)
         % Label the plot to later reference it. Only legend entries on the main
         % plotyy axis will have a label
         [m2t, labelNum] = incrementGlobalCounter(m2t, 'plotyylabel');
-        label = sprintf('\\label{%s}\n\n', plotyyLabelName(labelNum));
+        label = sprintf('\\label{%s}\n\n', plotyyLabelName(labelNum,m2t));
 
     elseif m2t.currentHandleHasLegend && ~isempty(m2t.axes{end}.PlotyyReferences)
         % We are on the secondary axis.
@@ -788,7 +788,7 @@ function [m2t, label, labelRef] = addPlotyyReference(m2t, h)
             ref            = m2t.axes{end}.PlotyyReferences(iRef);
             lString        = getLegendString(m2t,ref);
             labelRef{iRef} = sprintf('\\addlegendimage{/pgfplots/refstyle=%s}\n\\addlegendentry{%s}\n',...
-                                  plotyyLabelName(labelRange(iRef)), lString);
+                                  plotyyLabelName(labelRange(iRef),m2t), lString);
         end
         labelRef = join(m2t, labelRef, '');
 
@@ -800,9 +800,13 @@ function [m2t, label, labelRef] = addPlotyyReference(m2t, h)
     end
 end
 % ==============================================================================
-function label = plotyyLabelName(num)
+function label = plotyyLabelName(num,m2t)
     % creates a LaTeX label for a plotyy trace
     label = sprintf('plotyyref:leg%d', num);
+    
+    % Add filenmae to LaTeX label to make it unique
+    [~,name,~] = fileparts(m2t.tikzFileName);
+    label = [name,'_',label];
 end
 % ==============================================================================
 function legendInfo = addLegendInformation(m2t, h)
